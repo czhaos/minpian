@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+  <title>CenyunP</title>
+  <style>
+    :root {
+      --bg-main: #030816;
+      --bg-panel: rgba(11, 23, 54, 0.9);
+      --bg-highlight: #0f162b;
+      --accent: #4ae3ff;
+      --accent-soft: rgba(74, 227, 255, 0.15);
+      --accent-soft-stronger: rgba(74, 227, 255, 0.25);
+      --text-main: #f5f7ff;
+      --text-subtle: #a3b5d9;
+      --tag-bg: rgba(16, 37, 80, 0.6);
+      --tag-active-bg: #4ae3ff;
+      --tag-active-text: #02101a;
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.7);
+      --radius-lg: 22px;
+      --radius-pill: 20px;
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.28s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% -10%, #1a2748 0, #030816 40%),
+        radial-gradient(circle at 80% 120%, #081d34 0, #030816 55%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .background-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      overflow: hidden;
+    }
+
+    .starfield {
+      position: absolute;
+      inset: -20%;
+      background-image: radial-gradient(
+          1px 1px at 10% 20%,
+          rgba(255, 255, 255, 0.6),
+          transparent
+        ),
+        radial-gradient(
+          1.2px 1.2px at 80% 30%,
+          rgba(255, 255, 255, 0.5),
+          transparent
+        ),
+        radial-gradient(
+          0.9px 0.9px at 30% 80%,
+          rgba(255, 255, 255, 0.45),
+          transparent
+        ),
+        radial-gradient(
+          1px 1px at 60% 60%,
+          rgba(255, 255, 255, 0.55),
+          transparent
+        );
+      background-repeat: repeat;
+      opacity: 0.6;
+      animation: starfieldDrift 120s linear infinite;
+    }
+
+    @keyframes starfieldDrift {
+      from {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      to {
+        transform: translate3d(-6%, 6%, 0) scale(1.08);
+      }
+    }
+
+    .twinkle-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+      animation: twinkle 3.5s ease-in-out infinite;
+    }
+
+    .star:nth-child(3n) {
+      width: 1px;
+      height: 1px;
+      animation-duration: 4.5s;
+    }
+
+    .star:nth-child(4n) {
+      width: 2.5px;
+      height: 2.5px;
+      animation-duration: 5.3s;
+    }
+
+    @keyframes twinkle {
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+      40% {
+        opacity: 0.9;
+        transform: scale(1);
+      }
+      70% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+    }
+
+    .shooting-star {
+      position: absolute;
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0),
+        rgba(241, 249, 255, 0.9),
+        rgba(74, 227, 255, 0)
+      );
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: left center;
+      filter: drop-shadow(0 0 12px rgba(74, 227, 255, 0.9));
+      animation: shooting 10s linear infinite;
+    }
+
+    .shooting-star:nth-child(1) {
+      top: 14%;
+      left: 80%;
+      animation-delay: 2s;
+      transform: rotate(-18deg);
+    }
+
+    .shooting-star:nth-child(2) {
+      top: 30%;
+      left: 15%;
+      animation-delay: 6s;
+      transform: rotate(-25deg);
+    }
+
+    .shooting-star:nth-child(3) {
+      top: 22%;
+      left: 60%;
+      animation-delay: 11s;
+      transform: rotate(-15deg);
+    }
+
+    @keyframes shooting {
+      0%,
+      82% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scaleX(0.3);
+      }
+      84% {
+        opacity: 1;
+      }
+      92% {
+        opacity: 0.9;
+        transform: translate3d(-180px, 80px, 0) scaleX(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate3d(-260px, 120px, 0) scaleX(0.6);
+      }
+    }
+
+    .ocean {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 32vh;
+      min-height: 220px;
+      background: linear-gradient(
+        to top,
+        #020814 0,
+        #020c18 35%,
+        #041528 70%,
+        rgba(5, 17, 33, 0.85) 100%
+      );
+      backdrop-filter: blur(4px);
+      z-index: -2;
+    }
+
+    @media (max-width: 960px) {
+      .ocean {
+        height: 40vh;
+        min-height: 260px;
+      }
+    }
+
+    .waves {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 30vh;
+      min-height: 200px;
+      opacity: 0.9;
+    }
+
+    .waves path {
+      transform-origin: center bottom;
+    }
+
+    .waves path:nth-child(1) {
+      fill: rgba(15, 67, 109, 0.9);
+      animation: waveFloat1 14s ease-in-out infinite alternate;
+    }
+
+    .waves path:nth-child(2) {
+      fill: rgba(21, 91, 140, 0.9);
+      animation: waveFloat2 18s ease-in-out infinite alternate;
+    }
+
+    .waves path:nth-child(3) {
+      fill: rgba(12, 51, 92, 0.95);
+      animation: waveFloat3 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes waveFloat1 {
+      from {
+        transform: translate3d(0, 6px, 0);
+      }
+      to {
+        transform: translate3d(0, -4px, 0);
+      }
+    }
+
+    @keyframes waveFloat2 {
+      from {
+        transform: translate3d(0, 10px, 0);
+      }
+      to {
+        transform: translate3d(0, -6px, 0);
+      }
+    }
+
+    @keyframes waveFloat3 {
+      from {
+        transform: translate3d(0, 14px, 0);
+      }
+      to {
+        transform: translate3d(0, -8px, 0);
+      }
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px 40px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      background: transparent;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow-soft);
+      padding: 20px 22px 24px;
+      backdrop-filter: blur(20px);
+      display: grid;
+      grid-template-columns: 3fr 1.4fr;
+      column-gap: 24px;
+      row-gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(
+        circle at 80% 0,
+        rgba(74, 227, 255, 0.16),
+        transparent 60%
+      );
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @media (max-width: 820px) {
+      .shell {
+        grid-template-columns: 1fr;
+        padding: 18px 16px 20px;
+      }
+    }
+
+    .hero {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #f7fbff;
+    }
+
+    .hero-sub {
+      font-size: 12px;
+      color: var(--text-subtle);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .hero-window {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #19223e, #050918 75%);
+      min-height: 180px;
+      max-height: 360px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.7);
+      isolation: isolate;
+    }
+
+    .hero-window::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 15% 10%,
+        rgba(74, 227, 255, 0.28),
+        transparent 55%
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform-origin: center;
+      opacity: 0;
+    }
+
+    .hero-image.visible {
+      opacity: 1;
+    }
+
+    .hero-image.fade-in {
+      animation: heroFade 0.7s var(--transition-med);
+    }
+
+    @keyframes heroFade {
+      from {
+        opacity: 0;
+        transform: scale(1.02) translateY(4px);
+        filter: blur(4px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 4px;
+    }
+
+    .hero-tag {
+      position: relative;
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--text-subtle);
+      background: transparent;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform var(--transition-fast), box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
+      backdrop-filter: none;
+    }
+
+    .hero-tag::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at top,
+        rgba(74, 227, 255, 0.3),
+        transparent 68%
+      );
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .hero-tag:hover {
+      transform: translateY(-1px);
+      background: rgba(24, 51, 96, 0.2);
+      border-color: rgba(103, 231, 255, 0.65);
+      color: #e5f8ff;
+      box-shadow: 0 10px 26px rgba(3, 8, 24, 0.7);
+    }
+
+    .hero-tag.active {
+      color: #e9fbff;
+      background: rgba(74, 227, 255, 0.08);
+      border-color: rgba(74, 227, 255, 0.8);
+      box-shadow: 0 8px 30px rgba(74, 227, 255, 0.3);
+    }
+
+    .hero-tag.active::before {
+      opacity: 1;
+    }
+
+    .hero-tag span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sidebar {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .social-block {
+      background: transparent;
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 30px rgba(1, 4, 15, 0.85);
+      backdrop-filter: blur(22px);
+    }
+
+    .social-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-subtle);
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .social-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text-main);
+      background: rgba(7, 14, 33, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background var(--transition-med), transform var(--transition-fast),
+        box-shadow var(--transition-med), border-color var(--transition-med),
+        color var(--transition-med);
+      font-size: 13px;
+    }
+
+    .social-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .social-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #021019;
+      background: radial-gradient(circle at 30% 0, #e9f7ff, #b6d6ff);
+      box-shadow: 0 0 0 1px rgba(3, 10, 22, 0.36), 0 8px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .social-label {
+      white-space: nowrap;
+    }
+
+    .social-meta {
+      font-size: 11px;
+      color: var(--text-subtle);
+      opacity: 0.8;
+    }
+
+    .social-link:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(74, 227, 255, 0.16),
+        rgba(3, 8, 24, 0.95)
+      );
+      border-color: rgba(74, 227, 255, 0.7);
+      box-shadow: 0 16px 40px rgba(4, 9, 27, 0.9);
+      transform: translateY(-1px);
+      color: #f5fdff;
+    }
+
+    .social-link:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 18px rgba(2, 6, 18, 0.9);
+    }
+
+    .info-block {
+      background: transparent;
+      border-radius: var(--radius-lg);
+      padding: 14px 16px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: none;
+      backdrop-filter: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .info-name {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .info-tagline {
+      font-size: 13px;
+      color: var(--text-subtle);
+      line-height: 1.6;
+    }
+
+    .info-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .info-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(9, 25, 60, 0.9);
+      border: 1px solid rgba(170, 204, 255, 0.3);
+      color: var(--text-subtle);
+    }
+
+    @media (max-width: 820px) {
+      .sidebar {
+        order: 2;
+      }
+      .info-block {
+        order: 1;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .hero-window {
+        min-height: 160px;
+        border-radius: 18px;
+      }
+      .shell {
+        border-radius: 20px;
+      }
+    }
+
+    .footer-note {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-subtle);
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .footer-note span {
+      background: rgba(3, 9, 27, 0.7);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <div class="background-layer" aria-hidden="true">
+    <div class="starfield"></div>
+    <div class="twinkle-layer" id="twinkle-layer"></div>
+    <div class="twinkle-layer">
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+    </div>
+    <div class="ocean">
+      <svg
+        class="waves"
+        viewBox="0 0 1200 200"
+        preserveAspectRatio="none"
+      >
+        <!-- 前景几何海浪（最亮） -->
+        <path
+          d="M0,140 Q200,130 400,140 T800,140 T1200,140 V200 H0 Z"
+        />
+        <!-- 中景几何海浪 -->
+        <path
+          d="M0,150 Q240,135 480,150 T960,150 T1200,160 V200 H0 Z"
+        />
+        <!-- 背景几何海浪（最暗） -->
+        <path
+          d="M0,160 Q260,145 520,160 T1040,160 T1200,175 V200 H0 Z"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <main class="page">
+    <section class="shell" aria-label="个人名片主页">
+      <header class="hero">
+        <div class="hero-window" aria-live="polite">
+          <img
+            class="hero-image lazy-img"
+            id="hero-image"
+            alt=""
+            loading="lazy"
+            data-src=""
+          />
+        </div>
+        <div class="hero-tags" id="hero-tags" aria-label="图片标签"></div>
+      </header>
+
+      <aside class="info-block">
+        <div class="info-name" id="profile-name">YOUR NAME</div>
+        <p class="info-tagline" id="profile-tagline">
+          在安静的深色背景上，保留最少量的信息与光。
+        </p>
+        <div class="info-meta-row" id="profile-chips"></div>
+      </aside>
+
+      <section class="sidebar">
+        <div class="social-block">
+          <div class="social-title">SOCIAL LINKS</div>
+          <div class="social-list" id="social-list"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    // ====== 你可以自由修改的配置：顶部图片与标签 ======
+    const IMAGE_CONFIG = [
+      {
+        id: "music", // 图片的内部唯一标识（英文/拼音均可，自行命名）
+        tagLabel: "音乐", // 显示在图片下方按钮上的文字
+        description: "Music", // 预留的英文描述，目前仅作备注
+        src:
+          "assets/c__Users_Dell_AppData_Roaming_Cursor_User_workspaceStorage_52eaf6f904bc58ca36e66094da54a7ca_images_a7929898-6082-420f-8323-78ae1531b99a-b24998ab-1b15-4d9a-ac09-7b3629d0b361.png", // 图片地址：可以是本地相对路径或网络 URL
+        alt: "现场舞台与应援观众" // 图片的说明文字（给无障碍和搜索引擎用）
+      },
+      {
+        id: "travel", // 第二张图片的标识
+        tagLabel: "旅行", // 按钮文字
+        description: "Travel",
+        src: "https://images.pexels.com/photos/1553872/pexels-photo-1553872.jpeg", // 换成你的旅行照片地址
+        alt: "夜色中的海边城市天际线"
+      },
+      {
+        id: "it",
+        tagLabel: "IT",
+        description: "Code",
+        src: "https://images.pexels.com/photos/2409624/pexels-photo-2409624.jpeg", // 换成你的电脑/工作相关图片
+        alt: "暗色环境中的程序员屏幕"
+      },
+      {
+        id: "vocaloid",
+        tagLabel: "Vocaloid",
+        description: "Vocaloid",
+        src: "https://images.pexels.com/photos/164745/pexels-photo-164745.jpeg", // 换成你喜欢的舞台或音乐相关图片
+        alt: "舞台灯光与远处观众剪影"
+      }
+    ];
+
+    // ====== 你可以自由修改的配置：左下角个人信息 ======
+    const PROFILE_CONFIG = {
+      name: "YOUR NAME", // 左下角大字：你的名字 / ID
+      tagline: "在星空与海面之间，保留一点光与链接。", // 左下角小字简介：一两句自我介绍
+      chips: ["Developer", "Music & Vocaloid", "夜行旅人"] // 左下角小圆角标签：可以写职业/兴趣/身份
+    };
+
+    // ====== 你可以自由修改的配置：中部社交链接列表 ======
+    const SOCIAL_LINKS = [
+      {
+        id: "x", // 内部标识，保持唯一即可
+        label: "X (Twitter)", // 按钮左侧主文字
+        short: "@your_handle", // 按钮右侧小字：你的账号或备注
+        url: "https://x.com/your_handle", // 点击后跳转的完整链接
+        iconText: "X", // 没有图标地址时，用来显示在圆形中的文字
+        iconUrl: "https://cdn.simpleicons.org/x" // 品牌图标地址（可保留）
+      },
+      {
+        id: "bilibili",
+        label: "Bilibili",
+        short: "哔哩哔哩主页",
+        url: "https://www.bilibili.com/", // 换成你的 B 站空间链接
+        iconText: "B",
+        iconUrl: "https://cdn.simpleicons.org/bilibili"
+      },
+      {
+        id: "github",
+        label: "GitHub",
+        short: "github.com/yourname",
+        url: "https://github.com/yourname", // 换成你的 GitHub 主页
+        iconText: "{}",
+        iconUrl: "https://cdn.simpleicons.org/github"
+      },
+      {
+        id: "blog",
+        label: "Blog",
+        short: "个人博客 / Notion",
+        url: "https://example.com/", // 换成你的博客 / Notion 主页
+        iconText: "✶",
+        iconUrl: "https://cdn.simpleicons.org/notion"
+      }
+    ];
+
+    const heroImageEl = document.getElementById("hero-image");
+    const tagsContainer = document.getElementById("hero-tags");
+    const socialList = document.getElementById("social-list");
+    const profileNameEl = document.getElementById("profile-name");
+    const profileTaglineEl = document.getElementById("profile-tagline");
+    const profileChipsEl = document.getElementById("profile-chips");
+
+    let currentImageId = IMAGE_CONFIG[0]?.id || null;
+    let autoRotateTimer = null;
+
+    function renderProfile() {
+      profileNameEl.textContent = PROFILE_CONFIG.name;
+      profileTaglineEl.textContent = PROFILE_CONFIG.tagline;
+      profileChipsEl.innerHTML = "";
+      PROFILE_CONFIG.chips.forEach((chip) => {
+        const span = document.createElement("span");
+        span.className = "info-chip";
+        span.textContent = chip;
+        profileChipsEl.appendChild(span);
+      });
+    }
+
+    function renderSocialLinks() {
+      socialList.innerHTML = "";
+      SOCIAL_LINKS.forEach((link) => {
+        const a = document.createElement("a");
+        a.className = "social-link";
+        a.href = link.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+
+        const left = document.createElement("div");
+        left.className = "social-main";
+
+        const icon = document.createElement("div");
+        icon.className = "social-icon";
+
+        if (link.iconUrl) {
+          const img = document.createElement("img");
+          img.src = link.iconUrl;
+          img.alt = link.label;
+          img.style.width = "70%";
+          img.style.height = "70%";
+          img.style.objectFit = "contain";
+          icon.appendChild(img);
+        } else if (link.iconText) {
+          icon.textContent = link.iconText;
+        }
+
+        const label = document.createElement("span");
+        label.className = "social-label";
+        label.textContent = link.label;
+
+        left.appendChild(icon);
+        left.appendChild(label);
+
+        const meta = document.createElement("span");
+        meta.className = "social-meta";
+        meta.textContent = link.short;
+
+        a.appendChild(left);
+        a.appendChild(meta);
+        socialList.appendChild(a);
+      });
+    }
+
+    function renderTags() {
+      tagsContainer.innerHTML = "";
+      IMAGE_CONFIG.forEach((item, index) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className =
+          "hero-tag" + (index === 0 ? " active" : "");
+        btn.dataset.imageId = item.id;
+
+        const span = document.createElement("span");
+        span.textContent = item.tagLabel;
+
+        btn.appendChild(span);
+        btn.addEventListener("click", () => {
+          switchImage(item.id, true);
+        });
+
+        tagsContainer.appendChild(btn);
+      });
+    }
+
+    function getImageById(id) {
+      return IMAGE_CONFIG.find((item) => item.id === id) || IMAGE_CONFIG[0];
+    }
+
+    function applyActiveTag(id) {
+      const buttons = tagsContainer.querySelectorAll(".hero-tag");
+      buttons.forEach((btn) => {
+        if (btn.dataset.imageId === id) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+
+    function switchImage(id, resetTimer) {
+      if (!id || id === currentImageId) return;
+      const data = getImageById(id);
+      currentImageId = data.id;
+      applyActiveTag(currentImageId);
+
+      heroImageEl.classList.remove("fade-in");
+      const trigger = heroImageEl.offsetHeight;
+      void trigger;
+
+      heroImageEl.setAttribute("alt", data.alt || "");
+      heroImageEl.dataset.src = data.src;
+
+      if (heroImageEl._lazyLoaded) {
+        heroImageEl.src = data.src;
+      }
+
+      heroImageEl.classList.add("fade-in", "visible");
+
+      if (resetTimer) {
+        startAutoRotate();
+      }
+    }
+
+    function startAutoRotate() {
+      if (autoRotateTimer) {
+        clearInterval(autoRotateTimer);
+      }
+      autoRotateTimer = setInterval(() => {
+        const currentIndex = IMAGE_CONFIG.findIndex(
+          (item) => item.id === currentImageId
+        );
+        const next =
+          IMAGE_CONFIG[(currentIndex + 1) % IMAGE_CONFIG.length];
+        if (next) {
+          switchImage(next.id, false);
+        }
+      }, 9000);
+    }
+
+    const lazyImages = new Set();
+
+    function setupLazyLoading() {
+      const observer =
+        "IntersectionObserver" in window
+          ? new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const src = img.dataset.src;
+                    if (src && !img._lazyLoaded) {
+                      img.src = src;
+                      img._lazyLoaded = true;
+                    }
+                    observer.unobserve(img);
+                    lazyImages.delete(img);
+                  }
+                });
+              },
+              {
+                rootMargin: "80px",
+                threshold: 0.1
+              }
+            )
+          : null;
+
+      document
+        .querySelectorAll(".lazy-img")
+        .forEach((img) => {
+          lazyImages.add(img);
+          if (observer) {
+            observer.observe(img);
+          } else {
+            const src = img.dataset.src;
+            if (src) {
+              img.src = src;
+              img._lazyLoaded = true;
+            }
+          }
+        });
+    }
+
+    function populateStars() {
+      const layer = document.getElementById("twinkle-layer");
+      const starCount = window.innerWidth < 640 ? 40 : 70;
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        const x = Math.random() * 100;
+        const y = Math.random() * 55;
+        star.style.left = x + "%";
+        star.style.top = y + "%";
+        const delay = Math.random() * 6;
+        const scale = 0.6 + Math.random() * 0.9;
+        star.style.animationDelay = delay + "s";
+        star.style.transform = `scale(${scale})`;
+        layer.appendChild(star);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProfile();
+      renderSocialLinks();
+      renderTags();
+
+      const initial = getImageById(currentImageId);
+      heroImageEl.dataset.src = initial.src;
+      heroImageEl.alt = initial.alt || "";
+      heroImageEl.classList.add("visible");
+
+      setupLazyLoading();
+      startAutoRotate();
+      populateStars();
+    });
+  </script>
+</body>
+</html>
+
