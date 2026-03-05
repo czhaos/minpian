@@ -9,20 +9,20 @@
   <title>CenyunP</title>
   <style>
     :root {
-      --bg-main: #030816;
-      --bg-panel: rgba(11, 23, 54, 0.9);
-      --bg-highlight: #0f162b;
-      --accent: #4ae3ff;
-      --accent-soft: rgba(74, 227, 255, 0.15);
-      --accent-soft-stronger: rgba(74, 227, 255, 0.25);
-      --text-main: #f5f7ff;
-      --text-subtle: #a3b5d9;
-      --tag-bg: rgba(16, 37, 80, 0.6);
-      --tag-active-bg: #4ae3ff;
-      --tag-active-text: #02101a;
-      --border-soft: rgba(255, 255, 255, 0.06);
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.7);
-      --radius-lg: 22px;
+      --bg-main: #02030a;
+      --bg-panel: rgba(25, 29, 44, 0.72);
+      --bg-highlight: rgba(35, 40, 63, 0.9);
+      --accent: #0a84ff;
+      --accent-soft: rgba(10, 132, 255, 0.16);
+      --accent-soft-stronger: rgba(10, 132, 255, 0.28);
+      --text-main: #f9fbff;
+      --text-subtle: #aeb7c8;
+      --tag-bg: rgba(59, 66, 86, 0.6);
+      --tag-active-bg: rgba(10, 132, 255, 0.18);
+      --tag-active-text: #f9fbff;
+      --border-soft: rgba(255, 255, 255, 0.12);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.55);
+      --radius-lg: 24px;
       --radius-pill: 20px;
       --transition-fast: 0.18s ease-out;
       --transition-med: 0.28s ease-out;
@@ -40,10 +40,12 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 20% -10%, #1a2748 0, #030816 40%),
-        radial-gradient(circle at 80% 120%, #081d34 0, #030816 55%);
+      background:
+        radial-gradient(circle at top left, #22314f 0, transparent 55%),
+        radial-gradient(circle at top right, #39295a 0, transparent 55%),
+        radial-gradient(circle at bottom, #0b1931 0, #02030a 60%);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
@@ -196,86 +198,7 @@
       }
     }
 
-    .ocean {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 32vh;
-      min-height: 220px;
-      background: linear-gradient(
-        to top,
-        #020814 0,
-        #020c18 35%,
-        #041528 70%,
-        rgba(5, 17, 33, 0.85) 100%
-      );
-      backdrop-filter: blur(4px);
-      z-index: -2;
-    }
-
-    @media (max-width: 960px) {
-      .ocean {
-        height: 40vh;
-        min-height: 260px;
-      }
-    }
-
-    .waves {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 30vh;
-      min-height: 200px;
-      opacity: 0.9;
-    }
-
-    .waves path {
-      transform-origin: center bottom;
-    }
-
-    .waves path:nth-child(1) {
-      fill: rgba(15, 67, 109, 0.9);
-      animation: waveFloat1 14s ease-in-out infinite alternate;
-    }
-
-    .waves path:nth-child(2) {
-      fill: rgba(21, 91, 140, 0.9);
-      animation: waveFloat2 18s ease-in-out infinite alternate;
-    }
-
-    .waves path:nth-child(3) {
-      fill: rgba(12, 51, 92, 0.95);
-      animation: waveFloat3 22s ease-in-out infinite alternate;
-    }
-
-    @keyframes waveFloat1 {
-      from {
-        transform: translate3d(0, 6px, 0);
-      }
-      to {
-        transform: translate3d(0, -4px, 0);
-      }
-    }
-
-    @keyframes waveFloat2 {
-      from {
-        transform: translate3d(0, 10px, 0);
-      }
-      to {
-        transform: translate3d(0, -6px, 0);
-      }
-    }
-
-    @keyframes waveFloat3 {
-      from {
-        transform: translate3d(0, 14px, 0);
-      }
-      to {
-        transform: translate3d(0, -8px, 0);
-      }
-    }
+    /* 海浪效果已移除，这里保留空白以便未来需要时扩展底部样式 */
 
     .page {
       min-height: 100vh;
@@ -288,12 +211,13 @@
     .shell {
       width: 100%;
       max-width: 980px;
-      background: transparent;
-      border-radius: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(12, 26, 54, 0.9), rgba(4, 10, 24, 0.96));
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: var(--shadow-soft);
-      padding: 20px 22px 24px;
-      backdrop-filter: blur(20px);
+      padding: 22px 24px 26px;
+      backdrop-filter: blur(28px) saturate(140%);
       display: grid;
       grid-template-columns: 3fr 1.4fr;
       column-gap: 24px;
@@ -307,12 +231,12 @@
       position: absolute;
       inset: -40%;
       background: radial-gradient(
-        circle at 80% 0,
-        rgba(74, 227, 255, 0.16),
+        circle at 10% 0,
+        rgba(255, 255, 255, 0.2),
         transparent 60%
       );
-      mix-blend-mode: screen;
-      opacity: 0.6;
+      mix-blend-mode: soft-light;
+      opacity: 0.7;
       pointer-events: none;
       z-index: -1;
     }
@@ -357,7 +281,7 @@
       position: relative;
       border-radius: 24px;
       overflow: hidden;
-      background: radial-gradient(circle at top, #19223e, #050918 75%);
+      background: radial-gradient(circle at top, #242b3f, #050918 75%);
       min-height: 180px;
       max-height: 360px;
       display: flex;
@@ -425,13 +349,13 @@
       font-size: 13px;
       letter-spacing: 0.02em;
       color: var(--text-subtle);
-      background: transparent;
+      background: rgba(16, 21, 40, 0.65);
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       transition: background var(--transition-fast), color var(--transition-fast),
         transform var(--transition-fast), box-shadow var(--transition-fast),
         border-color var(--transition-fast);
-      backdrop-filter: none;
+      backdrop-filter: blur(14px) saturate(140%);
     }
 
     .hero-tag::before {
@@ -451,17 +375,17 @@
 
     .hero-tag:hover {
       transform: translateY(-1px);
-      background: rgba(24, 51, 96, 0.2);
-      border-color: rgba(103, 231, 255, 0.65);
+      background: rgba(24, 51, 96, 0.35);
+      border-color: rgba(134, 196, 255, 0.9);
       color: #e5f8ff;
       box-shadow: 0 10px 26px rgba(3, 8, 24, 0.7);
     }
 
     .hero-tag.active {
-      color: #e9fbff;
-      background: rgba(74, 227, 255, 0.08);
-      border-color: rgba(74, 227, 255, 0.8);
-      box-shadow: 0 8px 30px rgba(74, 227, 255, 0.3);
+      color: var(--tag-active-text);
+      background: var(--tag-active-bg);
+      border-color: rgba(10, 132, 255, 0.9);
+      box-shadow: 0 10px 34px rgba(10, 132, 255, 0.45);
     }
 
     .hero-tag.active::before {
@@ -482,12 +406,12 @@
     }
 
     .social-block {
-      background: transparent;
+      background: var(--bg-panel);
       border-radius: var(--radius-lg);
       padding: 14px 14px 16px;
       border: 1px solid var(--border-soft);
-      box-shadow: 0 10px 30px rgba(1, 4, 15, 0.85);
-      backdrop-filter: blur(22px);
+      box-shadow: 0 20px 40px rgba(1, 4, 15, 0.9);
+      backdrop-filter: blur(26px) saturate(140%);
     }
 
     .social-title {
@@ -514,8 +438,12 @@
       border-radius: 999px;
       text-decoration: none;
       color: var(--text-main);
-      background: rgba(7, 14, 33, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: linear-gradient(
+        145deg,
+        rgba(40, 46, 71, 0.95),
+        rgba(17, 22, 40, 0.98)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
       transition: background var(--transition-med), transform var(--transition-fast),
         box-shadow var(--transition-med), border-color var(--transition-med),
         color var(--transition-med);
@@ -532,14 +460,14 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
       color: #021019;
-      background: radial-gradient(circle at 30% 0, #e9f7ff, #b6d6ff);
-      box-shadow: 0 0 0 1px rgba(3, 10, 22, 0.36), 0 8px 18px rgba(0, 0, 0, 0.6);
+      background: radial-gradient(circle at 30% 0, #f5fbff, #d6e6ff);
+      box-shadow: 0 0 0 1px rgba(3, 10, 22, 0.36), 0 8px 18px rgba(0, 0, 0, 0.7);
     }
 
     .social-label {
@@ -555,11 +483,11 @@
     .social-link:hover {
       background: linear-gradient(
         135deg,
-        rgba(74, 227, 255, 0.16),
-        rgba(3, 8, 24, 0.95)
+        rgba(64, 140, 255, 0.22),
+        rgba(9, 16, 35, 0.98)
       );
-      border-color: rgba(74, 227, 255, 0.7);
-      box-shadow: 0 16px 40px rgba(4, 9, 27, 0.9);
+      border-color: rgba(152, 202, 255, 0.9);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.85);
       transform: translateY(-1px);
       color: #f5fdff;
     }
@@ -570,12 +498,12 @@
     }
 
     .info-block {
-      background: transparent;
+      background: var(--bg-panel);
       border-radius: var(--radius-lg);
       padding: 14px 16px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: none;
-      backdrop-filter: none;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 18px 40px rgba(1, 4, 15, 0.9);
+      backdrop-filter: blur(26px) saturate(140%);
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -656,26 +584,6 @@
       <div class="shooting-star"></div>
       <div class="shooting-star"></div>
       <div class="shooting-star"></div>
-    </div>
-    <div class="ocean">
-      <svg
-        class="waves"
-        viewBox="0 0 1200 200"
-        preserveAspectRatio="none"
-      >
-        <!-- 前景几何海浪（最亮） -->
-        <path
-          d="M0,140 Q200,130 400,140 T800,140 T1200,140 V200 H0 Z"
-        />
-        <!-- 中景几何海浪 -->
-        <path
-          d="M0,150 Q240,135 480,150 T960,150 T1200,160 V200 H0 Z"
-        />
-        <!-- 背景几何海浪（最暗） -->
-        <path
-          d="M0,160 Q260,145 520,160 T1040,160 T1200,175 V200 H0 Z"
-        />
-      </svg>
     </div>
   </div>
 
@@ -781,10 +689,10 @@
       {
         id: "blog",
         label: "Blog",
-        short: "个人博客 / Notion",
-        url: "https://example.com/", // 换成你的博客 / Notion 主页
+        short: "微博 / Notion",
+        url: "https://www.weibo.com/", // 换成你的博客 / Notion 主页
         iconText: "✶",
-        iconUrl: "https://cdn.simpleicons.org/notion"
+        iconUrl: "https://cdn.simpleicons.org/sinaweibo"
       }
     ];
 
